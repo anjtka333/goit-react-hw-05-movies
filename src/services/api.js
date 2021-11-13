@@ -87,10 +87,9 @@ export const searchMovies = (query) => {
   setParams();
   return axios
     .get(
-      `/search/movie?&language=en-US&page=1&include_adult=false&query=${query}`
+      `/search/movie?&language=en-US&page=1&include_adult=false&query=?${query}`
     )
     .then(({ data: { results } }) => {
-      console.log(results);
       return results;
     })
     .catch((err) => {

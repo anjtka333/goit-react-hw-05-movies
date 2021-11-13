@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { getMovieInfo } from "../services/api";
-import { useHistory, useRouteMatch, Route, NavLink } from "react-router-dom";
+import {
+  useHistory,
+  useRouteMatch,
+  Route,
+  NavLink,
+  useLocation,
+} from "react-router-dom";
 import Cast from "../components/Cast/Cast";
 import Reviews from "../components/Reviews/Reviews";
 
@@ -9,19 +15,31 @@ const MovieDetailsPage = () => {
     params: { movieId },
     url,
   } = useRouteMatch();
-  const histiry = useHistory();
-  const data = useRouteMatch();
+  const history = useHistory();
+  const { isExact } = useRouteMatch();
+  const location = useLocation();
+  console.log(location);
   const [movieInfo, setMovieInfo] = useState(null);
 
   useEffect(() => {
-    histiry.push(movieId);
-    console.log(movieId);
     getMovieInfo(movieId).then((resp) => setMovieInfo(resp));
     return () => {};
   }, []);
 
+  const onGoBack = () => {
+    if (!isExact) {
+      history.push(location.state.from.label);
+      console.log("here");
+      return;
+    }
+    history.push(location.state.from);
+  };
+  console.log(location.state.from);
   return movieInfo ? (
     <>
+      <button type="button" onClick={onGoBack}>
+        Go back
+      </button>
       <ul>
         <li>{movieInfo.title}</li>
         <li>{movieInfo.release_date}</li>
@@ -34,20 +52,36 @@ const MovieDetailsPage = () => {
         <li>{movieInfo.overview}</li>
         <li>
           {movieInfo.genres?.map((item) => (
-            <span>{item.name} </span>
+            <span key={item.id}>{item.name} </span>
           ))}
         </li>
       </ul>
       <h2>Addittional information</h2>
       <ul>
-        <NavLink to={`/movies/${movieId}/cast`}> Casts </NavLink>
-        <NavLink to={`${url}/reviews`}>Reviews</NavLink>
+        <NavLink
+          to={{
+            pathname: `${url}/cast`,
+            state: { from: location },
+          }}
+        >
+          Casts
+        </NavLink>
+        <NavLink
+          to={{
+            pathname: `${url}/reviews`,
+            state: {
+              from: location,
+            },
+          }}
+        >
+          Reviews
+        </NavLink>
       </ul>
       <Route path={`/movies/${movieId}/cast`}>
-        <Cast movieId={movieId} />
+        <Cast movieId={movieId} location={location.state.from} />
       </Route>
       <Route path={`/movies/${movieId}/reviews`}>
-        <Reviews movieId={movieId} />
+        <Reviews movieId={movieId} location={location.state.from} />
       </Route>
     </>
   ) : null;

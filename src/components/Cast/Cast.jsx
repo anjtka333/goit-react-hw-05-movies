@@ -1,9 +1,18 @@
 import { useEffect } from "react";
-import { useHistory, useParams, useRouteMatch } from "react-router";
+import {
+  useHistory,
+  useLocation,
+  useParams,
+  useRouteMatch,
+} from "react-router";
 import { useState } from "react/cjs/react.development";
 import { getMovieCast } from "../../services/api";
 
-const Cast = ({ movieId }) => {
+const Cast = ({ movieId, location }) => {
+  const castLocation = useLocation();
+  const newPathname = location.state.from.pathname;
+  castLocation.state.from.label = newPathname;
+  console.log(castLocation);
   const [movieCast, setMovieCast] = useState([]);
   useEffect(() => {
     getMovieCast(movieId).then((cast) => {
