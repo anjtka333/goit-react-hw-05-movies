@@ -1,3 +1,4 @@
+import s from "./Cast.module.css";
 import { useEffect } from "react";
 import {
   useHistory,
@@ -10,9 +11,12 @@ import { getMovieCast } from "../../services/api";
 
 const Cast = ({ movieId, location }) => {
   const castLocation = useLocation();
-  const newPathname = location.state.from.pathname;
-  castLocation.state.from.label = newPathname;
-  console.log(castLocation);
+  const newPathname = location?.state.from.pathname;
+  if (castLocation.state) {
+    castLocation.state.from.label = newPathname;
+  } else {
+    castLocation.state.from.label = "/";
+  }
   const [movieCast, setMovieCast] = useState([]);
   useEffect(() => {
     getMovieCast(movieId).then((cast) => {

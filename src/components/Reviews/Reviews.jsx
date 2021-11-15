@@ -1,11 +1,10 @@
+import s from "./Reviews.module.css";
 import { useEffect } from "react";
 import { useLocation } from "react-router";
 import { useState } from "react/cjs/react.development";
 import { getReviews } from "../../services/api";
 
-const Reviews = ({ movieId, location }) => {
-  const revievLocation = useLocation();
-  revievLocation.state.from.label = location.state.from.pathname;
+const Reviews = ({ movieId }) => {
   const [movieReview, setMovieReview] = useState([]);
   useEffect(() => {
     getReviews(movieId).then((data) => setMovieReview(data));
@@ -15,7 +14,7 @@ const Reviews = ({ movieId, location }) => {
       Review
       {movieReview.map((item) => {
         return (
-          <li>
+          <li key={item.id}>
             <p>{item.author}</p>
             <p>{item.content}</p>
           </li>

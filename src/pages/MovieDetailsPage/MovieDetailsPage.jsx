@@ -1,14 +1,18 @@
+import s from "./MovieDetails.module.css";
 import { useEffect, useState } from "react";
-import { getMovieInfo } from "../services/api";
+import { getMovieInfo } from "../../services/api";
 import {
   useHistory,
   useRouteMatch,
   Route,
   NavLink,
   useLocation,
+  Switch,
+  Redirect,
 } from "react-router-dom";
-import Cast from "../components/Cast/Cast";
-import Reviews from "../components/Reviews/Reviews";
+import Cast from "../../components/Cast/Cast";
+import Reviews from "../../components/Reviews/Reviews";
+import NotFound from "../NotFound/NotFound";
 
 const MovieDetailsPage = () => {
   const {
@@ -22,22 +26,19 @@ const MovieDetailsPage = () => {
   const [movieInfo, setMovieInfo] = useState(null);
 
   useEffect(() => {
-    getMovieInfo(movieId).then((resp) => setMovieInfo(resp));
+    getMovieInfo(movieId)
+      .then((resp) => setMovieInfo(resp))
+      .catch((err) => history.push("/404"));
     return () => {};
   }, []);
 
   const onGoBack = () => {
-    if (!isExact) {
-      history.push(location.state.from.label);
-      console.log("here");
-      return;
-    }
-    history.push(location.state.from);
+    history.push(location.state?.from);
   };
-  console.log(location.state.from);
+
   return movieInfo ? (
     <>
-      <button type="button" onClick={onGoBack}>
+      <button className={s.Button} type="button" onClick={onGoBack}>
         Go back
       </button>
       <ul>
@@ -59,30 +60,35 @@ const MovieDetailsPage = () => {
       <h2>Addittional information</h2>
       <ul>
         <NavLink
+          className={s.Button}
+          activeClassName={s.ButtonActive}
           to={{
             pathname: `${url}/cast`,
-            state: { from: location },
+            state: { ...location.state }, //{from: {…}}
           }}
         >
-          Casts
+          <li> Casts</li>
         </NavLink>
         <NavLink
+          className={s.Button}
+          activeClassName={s.ButtonActive}
           to={{
             pathname: `${url}/reviews`,
-            state: {
-              from: location,
-            },
+            state: { ...location.state },
           }}
         >
-          Reviews
+          <li> Reviews</li>
         </NavLink>
       </ul>
-      <Route path={`/movies/${movieId}/cast`}>
-        <Cast movieId={movieId} location={location.state.from} />
-      </Route>
-      <Route path={`/movies/${movieId}/reviews`}>
-        <Reviews movieId={movieId} location={location.state.from} />
-      </Route>
+      <Switch>
+        <Route path={`/movies/${movieId}/cast`}>
+          <Cast movieId={movieId} />
+        </Route>
+        <Route path={`/movies/${movieId}/reviews`}>
+          <Reviews movieId={movieId} />
+        </Route>
+        {/* <Redirect to="/" /> */}
+      </Switch>
     </>
   ) : null;
 };

@@ -11,15 +11,15 @@ export const getMovies = () => {
   setParams();
 
   return axios
-    .get(`/trending/video/day`)
+    .get(`/trending/movie/day`)
     .then(({ data }) => {
       const moviesTitle = data.results.map((item) => {
         return {
           title: item.title,
           id: item.id,
+          backdrop_path: item.backdrop_path,
         };
       });
-      console.log(moviesTitle);
       return moviesTitle;
     })
     .catch((err) => {
@@ -54,6 +54,8 @@ export const getMovieInfo = (movieId) => {
       }
     )
     .catch((err) => {
+      console.log("Eroor" + err);
+
       throw err;
     });
 };
