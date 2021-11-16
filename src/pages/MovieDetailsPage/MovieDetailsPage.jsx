@@ -81,10 +81,10 @@ const MovieDetailsPage = () => {
         </NavLink>
       </ul>
       <Switch>
-        <Route path={`/movies/${movieId}/cast`}>
+        <Route path={`/movie/${movieId}/cast`}>
           <Cast movieId={movieId} />
         </Route>
-        <Route path={`/movies/${movieId}/reviews`}>
+        <Route path={`/movie/${movieId}/reviews`}>
           <Reviews movieId={movieId} />
         </Route>
         {/* <Redirect to="/" /> */}

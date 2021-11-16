@@ -56,7 +56,7 @@ function App() {
           {/* <Route path="/">
             <NotFound />
           </Route> */}
-          {/* <Redirect to="/" /> */}
+          <Redirect to="/" />
         </Switch>
       </Suspense>
     </div>
