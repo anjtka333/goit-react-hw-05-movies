@@ -9,9 +9,8 @@ const Reviews = ({ movieId }) => {
   useEffect(() => {
     getReviews(movieId).then((data) => setMovieReview(data));
   }, []);
-  return (
+  return movieReview.length ? (
     <ul>
-      Review
       {movieReview.map((item) => {
         return (
           <li key={item.id}>
@@ -21,6 +20,8 @@ const Reviews = ({ movieId }) => {
         );
       })}
     </ul>
+  ) : (
+    <h1> Sorry no review</h1>
   );
 };
 

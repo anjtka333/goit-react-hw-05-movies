@@ -1,8 +1,6 @@
 import {
-  Link,
   useLocation,
   useHistory,
-  useParams,
   Route,
   useRouteMatch,
   Switch,
@@ -13,6 +11,7 @@ import { searchMovies } from "../../services/api";
 import queryString from "query-string";
 import s from "./MoviesPage.module.css";
 import NotFound from "../NotFound/NotFound";
+import MovieList from "../../components/MovieList/MovieList";
 
 const MoviePage = () => {
   const [searchQ, setSearchQ] = useState("");
@@ -62,40 +61,12 @@ const MoviePage = () => {
           />
         </form>
       </header>
-
-      {/* <ul>
-        {results.map((item) => (
-          <li key={item.id}>
-            <Link
-              to={{
-                pathname: `/movie/${item.id}`,
-                state: { from: location },
-              }}
-            >
-              {item.title}
-            </Link>
-          </li>
-        ))}
-      </ul> */}
       <Switch>
         <Route path={`/movies/404`} exact>
           <NotFound />
         </Route>
         <Route path={`/movies`} exact>
-          <ul>
-            {results.map((item) => (
-              <li key={item.id}>
-                <Link
-                  to={{
-                    pathname: `/movie/${item.id}`,
-                    state: { from: location },
-                  }}
-                >
-                  {item.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <MovieList results={results} />
         </Route>
         <Redirect to="/" />
       </Switch>

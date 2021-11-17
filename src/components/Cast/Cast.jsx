@@ -10,13 +10,6 @@ import { useState } from "react/cjs/react.development";
 import { getMovieCast } from "../../services/api";
 
 const Cast = ({ movieId, location }) => {
-  // const castLocation = useLocation();
-  // const newPathname = location?.state.from.pathname;
-  // if (castLocation.state) {
-  //   castLocation.state.from.label = newPathname;
-  // } else {
-  //   castLocation.state.from.label = "/";
-  // }
   const [movieCast, setMovieCast] = useState([]);
   useEffect(() => {
     getMovieCast(movieId).then((cast) => {
@@ -30,7 +23,13 @@ const Cast = ({ movieId, location }) => {
         {movieCast.map((item) => (
           <li key={item.id}>
             <p>{item.name}</p>
-            <img src={`https://image.tmdb.org/t/p/w500${item.profile_path}`} />
+            <img
+              src={
+                item.profile_path
+                  ? `https://image.tmdb.org/t/p/w500${item.profile_path}`
+                  : `../img/default_img.png`
+              }
+            />
             <p>{item.character}</p>
           </li>
         ))}

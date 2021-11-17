@@ -1,25 +1,22 @@
 import "./Shared_styles.css";
 import { lazy, Suspense } from "react";
-import {
-  Route,
-  Switch,
-  useRouteMatch,
-  withRouter,
-  Link,
-  NavLink,
-  Redirect,
-} from "react-router-dom";
-// import HomePage from "./pages/HomePage/HomePage";
-import MovieDetailsPage from "./pages/MovieDetailsPage/MovieDetailsPage";
-import MoviesPage from "./pages/MoviesPage/MoviesPage";
-import NotFound from "./pages/NotFound/NotFound";
+import { Route, Switch, NavLink, Redirect } from "react-router-dom";
 import s from "./App.module.css";
 
-// const MovieDetailsPage = lazy(() =>
-//   import("./pages/MovieDetailsPage/MovieDetailsPage")
-// );
-
-const HomePage = lazy(() => import("./pages/HomePage/HomePage"));
+const HomePage = lazy(() =>
+  import("./pages/HomePage/HomePage" /* webpackChunkName: "HomePage" */)
+);
+const MovieDetailsPage = lazy(() =>
+  import(
+    "./pages/MovieDetailsPage/MovieDetailsPage" /* webpackChunkName: "MovieDetailsPage" */
+  )
+);
+const MoviesPage = lazy(() =>
+  import("./pages/MoviesPage/MoviesPage" /* webpackChunkName: "MoviesPage" */)
+);
+const NotFound = lazy(() =>
+  import("./pages/NotFound/NotFound" /* webpackChunkName: "NotFound" */)
+);
 function App() {
   return (
     <div className={s.App}>
@@ -52,10 +49,6 @@ function App() {
           <Route path="/" exact>
             <HomePage />
           </Route>
-
-          {/* <Route path="/">
-            <NotFound />
-          </Route> */}
           <Redirect to="/" />
         </Switch>
       </Suspense>

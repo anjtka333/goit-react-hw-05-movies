@@ -8,11 +8,15 @@ import {
   NavLink,
   useLocation,
   Switch,
-  Redirect,
 } from "react-router-dom";
-import Cast from "../../components/Cast/Cast";
-import Reviews from "../../components/Reviews/Reviews";
-import NotFound from "../NotFound/NotFound";
+import { lazy } from "react";
+
+const Cast = lazy(() =>
+  import("../../components/Cast/Cast" /* webpackChunkName: "Cast" */)
+);
+const Reviews = lazy(() =>
+  import("../../components/Reviews/Reviews" /* webpackChunkName: "Reviews" */)
+);
 
 const MovieDetailsPage = () => {
   const {
@@ -22,7 +26,6 @@ const MovieDetailsPage = () => {
   const history = useHistory();
   const { isExact } = useRouteMatch();
   const location = useLocation();
-  console.log(location);
   const [movieInfo, setMovieInfo] = useState(null);
 
   useEffect(() => {
@@ -33,7 +36,7 @@ const MovieDetailsPage = () => {
   }, []);
 
   const onGoBack = () => {
-    history.push(location.state?.from);
+    history.push(location.state?.from || "/");
   };
 
   return movieInfo ? (
@@ -46,7 +49,11 @@ const MovieDetailsPage = () => {
         <li>{movieInfo.release_date}</li>
         <li>
           <img
-            src={`https://image.tmdb.org/t/p/w500${movieInfo.backdrop_path}`}
+            src={
+              movieInfo.backdrop_path
+                ? `https://image.tmdb.org/t/p/w500${movieInfo.backdrop_path}`
+                : `../img/default_img.png`
+            }
           />
         </li>
         <li>{movieInfo.vote_average}</li>
@@ -80,6 +87,7 @@ const MovieDetailsPage = () => {
           <li> Reviews</li>
         </NavLink>
       </ul>
+
       <Switch>
         <Route path={`/movie/${movieId}/cast`}>
           <Cast movieId={movieId} />
@@ -87,7 +95,6 @@ const MovieDetailsPage = () => {
         <Route path={`/movie/${movieId}/reviews`}>
           <Reviews movieId={movieId} />
         </Route>
-        {/* <Redirect to="/" /> */}
       </Switch>
     </>
   ) : null;
