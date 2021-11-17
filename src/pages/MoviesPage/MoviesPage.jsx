@@ -6,7 +6,7 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
-import { useEffect, useState } from "react/cjs/react.development";
+import { useEffect, useState } from "react";
 import { searchMovies } from "../../services/api";
 import queryString from "query-string";
 import s from "./MoviesPage.module.css";

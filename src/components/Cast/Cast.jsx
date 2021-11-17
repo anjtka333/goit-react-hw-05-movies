@@ -1,15 +1,8 @@
-import s from "./Cast.module.css";
 import { useEffect } from "react";
-import {
-  useHistory,
-  useLocation,
-  useParams,
-  useRouteMatch,
-} from "react-router";
-import { useState } from "react/cjs/react.development";
+import { useState } from "react";
 import { getMovieCast } from "../../services/api";
 
-const Cast = ({ movieId, location }) => {
+const Cast = ({ movieId }) => {
   const [movieCast, setMovieCast] = useState([]);
   useEffect(() => {
     getMovieCast(movieId).then((cast) => {

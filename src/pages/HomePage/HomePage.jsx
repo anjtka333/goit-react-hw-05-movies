@@ -1,7 +1,6 @@
 import { getMovies } from "../../services/api";
 import { useEffect, useState } from "react";
-import { Link, useHistory, useRouteMatch, useLocation } from "react-router-dom";
-import s from "./HomePage.module.css";
+import { useLocation } from "react-router-dom";
 import MovieList from "../../components/MovieList/MovieList";
 
 const HomePage = () => {
