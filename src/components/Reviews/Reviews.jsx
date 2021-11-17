@@ -1,7 +1,4 @@
-import s from "./Reviews.module.css";
-import { useEffect } from "react";
-import { useLocation } from "react-router";
-import { useState } from "react/cjs/react.development";
+import { useEffect, useState } from "react";
 import { getReviews } from "../../services/api";
 
 const Reviews = ({ movieId }) => {

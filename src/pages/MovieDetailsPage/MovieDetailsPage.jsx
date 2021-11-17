@@ -8,6 +8,7 @@ import {
   NavLink,
   useLocation,
   Switch,
+  Redirect,
 } from "react-router-dom";
 import { lazy } from "react";
 
@@ -71,10 +72,11 @@ const MovieDetailsPage = () => {
           activeClassName={s.ButtonActive}
           to={{
             pathname: `${url}/cast`,
-            state: { ...location.state }, //{from: {…}}
+            // state: { ...location.state }, //{from: {…}}
+            state: { from: location.state?.from }, //{from: {…}}
           }}
         >
-          <li> Casts</li>
+          Casts
         </NavLink>
         <NavLink
           className={s.Button}
@@ -95,6 +97,7 @@ const MovieDetailsPage = () => {
         <Route path={`/movie/${movieId}/reviews`}>
           <Reviews movieId={movieId} />
         </Route>
+        {!isExact && <Redirect to="/" />}
       </Switch>
     </>
   ) : null;
